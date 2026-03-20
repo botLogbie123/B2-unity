@@ -190,6 +190,16 @@ namespace GlosColGames
             {
                 nextAttackTime = Time.time + 1.0f; // 1 second cooldown
 
+                RaycastHit hit;
+                if (Physics.Raycast(ai.transform.position, ai.transform.forward, out hit, ai.attackRange))
+                { 
+                    if (hit.collider.GetComponent<PlayerHealth>() != null) 
+                    {
+                        PlayerHealth health = hit.collider.GetComponent<PlayerHealth>();
+                        health.TakenDamage(5);
+                    }
+                }
+
                 Debug.Log($"{ai.name} attacks!");
 
                 // Extend for advanced students:
