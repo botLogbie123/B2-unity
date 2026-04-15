@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class FlyingController : MonoBehaviour
@@ -8,20 +9,23 @@ public class FlyingController : MonoBehaviour
 
     public Camera PlayerFollowCamera;
     private float currentHeight;
-    private Animator anim;
+    private Animator anim; // todo
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         currentHeight = transform.position.y;
-        anim = GetComponent<Animator>();
+        // anim = GetComponent<Animator>();
+    
+        Cursor.lockState= CursorLockMode.Locked;
     }
+
 
     // Update is called once per frame
     void Update()
     {
-        float horizontal = Input.GetAxis("horizontal");
-        float verticle = Input.GetAxis("verticle");
+        float horizontal = Input.GetAxis("Horizontal");
+        float verticle = Input.GetAxis("Vertical");
 
         if (Input.GetKey(KeyCode.W)) 
         {
@@ -37,7 +41,7 @@ public class FlyingController : MonoBehaviour
         }
 
         currentHeight = Mathf.Clamp(transform.position.y, currentHeight, maxFloatHeight);
-        transform.position = new Vector3(transform.position.x, currentHeight transform.position.z);
+        transform.position = new Vector3(transform.position.x, currentHeight, transform.position.z);
     }
 
     private void MoveCharacter() 
@@ -46,7 +50,7 @@ public class FlyingController : MonoBehaviour
         transform.rotation = Quaternion.LookRotation(cameraForward);
         transform.Rotate(new Vector3(0,0,0), Space.Self);
 
-        anim.SetBool("isFlying", true);
+        // anim.SetBool("isFlying", true);
 
         Vector3 forward = PlayerFollowCamera.transform.forward;
         Vector3 flyDirection = forward.normalized;
@@ -58,4 +62,13 @@ public class FlyingController : MonoBehaviour
         transform.position = new Vector3(transform.position.x, currentHeight, transform.position.z);
     
     }
+
+    private void DisableMovement()
+    {
+        // anim.SetBool("isflying", false);
+        transform.rotation = quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+    
+    
+    }
+
 } 
